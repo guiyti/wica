@@ -1,0 +1,92 @@
+{
+  "events": [
+    {
+      "date": "2025-10-13",
+      "dateLabel": "13/10 - Segunda-feira",
+      "period": "manhã",
+      "time": "9h às 10h30",
+      "speaker": "Nome do Palestrante",
+      "title": "Criando uma Plataforma de BI - 100% Open Source.",
+      "modality": "presencial",
+      "campus": "São Miguel",
+      "tags": ["EMPRESA", "HANDS-ON"]
+    },
+    {
+      "date": "2025-10-13",
+      "dateLabel": "13/10 - Segunda-feira",
+      "period": "noite",
+      "time": "19h30 às 21h",
+      "speaker": "Nome do Palestrante",
+      "title": "Grafos de Conhecimento e IA Generativa. ",
+      "modality": "remoto",
+      "teamsUrl": "https://teams.microsoft.com/l/meetup-join/XXXX",
+      "tags": ["MACKENZIE"]
+    },
+    {
+      "date": "2025-10-15",
+      "dateLabel": "15/10 - Quarta-feira",
+      "period": "manhã",
+      "time": "9h às 10h30",
+      "speaker": "Nome do Palestrante",
+      "title": "Realidades Estendidas e o Futuro da Educação.",
+      "modality": "presencial",
+      "campus": "Anália Franco",
+      "tags": ["VRFIX"]
+    },
+    {
+      "date": "2025-10-15",
+      "dateLabel": "15/10 - Quarta-feira",
+      "period": "noite",
+      "time": "19h30 às 21h",
+      "speaker": "Nome do Palestrante",
+      "title": "Visualização da Informação: conceitos e técnicas.",
+      "modality": "remoto",
+      "teamsUrl": "https://teams.microsoft.com/l/meetup-join/YYYY",
+      "tags": ["FATEC"]
+    },
+    {
+      "date": "2025-10-16",
+      "dateLabel": "16/10 - Quinta-feira",
+      "period": "manhã",
+      "time": "9h às 10h30",
+      "speaker": "Nome do Palestrante",
+      "title": "Segurança da Informação: é influenciada pela punição e comportamento?",
+      "modality": "presencial",
+      "campus": "Guarulhos",
+      "tags": ["MACKENZIE"]
+    },
+    {
+      "date": "2025-10-16",
+      "dateLabel": "16/10 - Quinta-feira",
+      "period": "noite",
+      "time": "19h30 às 21h",
+      "speaker": "Nome do Palestrante",
+      "title": "Agilidade e suas Métricas.",
+      "modality": "presencial",
+      "campus": "Santo Amaro",
+      "tags": ["CLARO"]
+    },
+    {
+      "date": "2025-10-17",
+      "dateLabel": "17/10 - Sexta-feira",
+      "period": "manhã",
+      "time": "9h às 10h30",
+      "speaker": "Nome do Palestrante",
+      "title": "Ciência de Dados: Principais etapas para subir um modelo para produção.",
+      "modality": "presencial",
+      "campus": "Paulista",
+      "tags": ["IFOOD"]
+    },
+    {
+      "date": "2025-10-17",
+      "dateLabel": "17/10 - Sexta-feira",
+      "period": "noite",
+      "time": "19h30 às 21h",
+      "speaker": "Nome do Palestrante",
+      "title": "Inteligência Artificial na Educação.",
+      "modality": "remoto",
+      "teamsUrl": "https://teams.microsoft.com/l/meetup-join/ZZZZ",
+      "tags": ["MACKENZIE"]
+    }
+  ]
+}
