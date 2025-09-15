@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WICA 2025 - Workshop de Informática e Computação Aplicada</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- O body terá um height de exemplo para demonstrar o scroll -->
     <style>
         body { 
-            background-color: #18181b; /* Cor de fundo para o exemplo */
+            background-color: #18181b;
             margin: 0;
             padding: 0;
         }
@@ -17,7 +16,6 @@
 <body>
 
     <!-- INÍCIO DO COMPONENTE WICA 2025 -->
-    <!-- Copie e cole tudo a partir daqui -->
     <div id="wica-container" class="w-full flex flex-col">
         <!-- Estilos e Fontes encapsulados -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,9 +24,15 @@
         <style>
             #wica-container {
                 font-family: 'Inter', sans-serif;
-                background-color: #18181b; /* bg-zinc-900 */
+                background-color: #18181b;
                 color: white;
             }
+
+            #section-diurno,
+            #section-noturno {
+            scroll-margin-top: 40px; /* melhor para scrollIntoView */
+            }
+
             .gradient-text {
                 background: linear-gradient(90deg, #f87171, #fb923c, #facc15);
                 -webkit-background-clip: text;
@@ -37,24 +41,24 @@
                 text-fill-color: transparent;
             }
             .card {
-                background-color: #27272a; /* zinc-800 */
-                border: 1px solid #3f3f46; /* zinc-700 */
+                background-color: #27272a;
+                border: 1px solid #3f3f46;
                 transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
             }
             .card:hover { transform: translateY(-4px); }
-            /* Hero (grande) e Mini-header (sticky) - apenas CSS */
+            
             #hero {
                 background-color: #18181b;
                 padding: 1rem;
             }
             
-            
-            /* Desktop */
             @media (min-width: 1024px) {
                 #hero { padding: 2rem; }
             }
             
-            /* Mobile: hero grande e mini-header visível sempre */
             @media (max-width: 1023px) {
                 #hero {
                     display: flex;
@@ -64,13 +68,8 @@
                 #hero .hero-content { padding-top: 60px; }
                 #hero h1 { font-size: 2rem; line-height: 1.2; }
                 #hero .hero-brand img { width: 48px; height: 48px; }
-                
             }
-            /* Removidos estados baseados em scroll (sem JS) */
             
-
-            
-            /* Destaque nos horários e datas */
             .date-time-badge {
                 background: linear-gradient(90deg, #fbbf24, #f59e0b);
                 color: #18181b;
@@ -95,31 +94,259 @@
                 text-align: center;
                 margin-bottom: 0.5rem;
             }
-            /* Badges de modalidade */
-            .modality { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
-            .badge-remote { background: linear-gradient(90deg, #6366f1, #8b5cf6); color: white; font-weight: bold; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; text-decoration: none; }
-            .badge-inperson { background: linear-gradient(90deg, #f59e0b, #ef4444); color: #18181b; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; }
+
+            .virtual-room-btn {
+                background: linear-gradient(90deg, #6366f1, #8b5cf6);
+                color: white;
+                font-weight: bold;
+                padding: 0.75rem 1.5rem;
+                border-radius: 9999px;
+                font-size: 0.875rem;
+                text-decoration: none;
+                display: inline-block;
+                margin-top: 1rem;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                border: none;
+            }
             
-            /* Centralização melhorada */
+            .virtual-room-btn:hover {
+                transform: scale(1.05);
+                background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            }
+
+            .virtual-room-btn:disabled {
+                background: #6b7280;
+                cursor: not-allowed;
+                transform: none;
+            }
+            
             .event-card {
                 text-align: center;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                height: 100%;
+                justify-content: space-between;
+            }
+
+            .card-header {
+                width: 100%;
+                flex-shrink: 0;
+            }
+
+            .card-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                padding: 1rem 0;
+            }
+
+            .card-footer {
+                width: 100%;
+                flex-shrink: 0;
+                margin-top: auto;
+                padding-top: 1rem;
             }
             
-            .event-title { text-align: center; margin: 1rem 0; }
+            .event-title { 
+                text-align: center; 
+                margin: 0.75rem 0 0.5rem 0; 
+                min-height: 2.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .event-company {
+                min-height: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .event-description { 
+                text-align: center; 
+                line-height: 1.6; 
+                margin: 0.75rem 0;
+                flex-grow: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 3rem;
+            }
+
+            .event-tags { 
+                display: flex; 
+                justify-content: center; 
+                gap: 0.5rem; 
+                flex-wrap: wrap; 
+                margin-top: 1rem;
+                min-height: 2rem;
+                align-items: flex-start;
+            }
+
+            /* Modal styles */
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background-color: #27272a;
+                border: 1px solid #3f3f46;
+                border-radius: 12px;
+                padding: 2rem;
+                max-width: 500px;
+                width: 90%;
+                text-align: center;
+                position: relative;
+            }
+
+            .modal-close {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                color: #9ca3af;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 4px;
+                transition: color 0.2s;
+            }
+
+            .modal-close:hover {
+                color: white;
+            }
+
+            .modal h3 {
+                color: #fbbf24;
+                margin-bottom: 1rem;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+
+            .modal p {
+                color: #d1d5db;
+                margin-bottom: 1.5rem;
+                line-height: 1.6;
+            }
+
+            .recording-input {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #3f3f46;
+                border-radius: 8px;
+                background-color: #18181b;
+                color: white;
+                margin-bottom: 1rem;
+                font-size: 0.875rem;
+            }
+
+            .recording-input::placeholder {
+                color: #6b7280;
+            }
+
+            .save-recording-btn {
+                background: linear-gradient(90deg, #10b981, #059669);
+                color: white;
+                font-weight: bold;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                font-size: 0.875rem;
+                transition: all 0.3s ease;
+            }
+
+            .save-recording-btn:hover {
+                background: linear-gradient(90deg, #059669, #047857);
+            }
+
+            /* Estilos para navegação por período */
+            .period-toggle {
+                padding: 0.75rem 1.5rem;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 0.875rem;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                border: none;
+                background: transparent;
+                color: #9ca3af;
+                margin: 0 2px;
+            }
+
+            .period-toggle:hover {
+                color: white;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .period-toggle.active {
+                background: linear-gradient(90deg, #fbbf24, #f59e0b);
+                color: #18181b;
+                font-weight: bold;
+            }
+
+            /* Indicador de scroll */
+            .scroll-indicator {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 0.75rem;
+                border-radius: 50px;
+                font-size: 0.875rem;
+                font-weight: bold;
+                backdrop-filter: blur(10px);
+                border: 1px solid #3f3f46;
+                animation: bounce 2s infinite;
+                z-index: 100;
+            }
+
+            .scroll-indicator.hidden {
+                display: none;
+            }
+
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
             
-            .event-description { text-align: center; line-height: 1.6; margin: 1rem 0; }
             
-            .event-tags { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
-            
-            /* Remoções de estilos não usados e ajustes mínimos */
-            @media (min-width: 1024px) {}
-            @media (max-width: 1023px) {}
+
+            /* Seções com scroll suave */
+            html {
+                scroll-behavior: smooth;
+            }
         </style>
 
-        <!-- Hero grande (ocupa 60vh em mobile) -->
+        <!-- Hero grande -->
         <section id="hero" class="text-center">
             <div class="hero-content">
                 <div class="hero-brand flex justify-center items-center mb-3">
@@ -133,22 +360,280 @@
             </div>
         </section>
 
+        <!-- Navegação por Período -->
+        <nav class="flex justify-center py-6 border-b border-zinc-700">
+            <div class="flex bg-zinc-800 rounded-lg p-1">
+                <button id="btn-diurno" onclick="scrollToPeriod('diurno')" class="period-toggle active">
+                    ☀️ DIURNO
+                </button>
+                <button id="btn-noturno" onclick="scrollToPeriod('noturno')" class="period-toggle">
+                    🌙 NOTURNO
+                </button>
+            </div>
+        </nav>
 
-
-
-        <!-- Grade de Programação (preenchida via JS) -->
+        <!-- Grade de Programação -->
         <main class="flex-grow p-4">
-            <div id="schedule-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"></div>
+            <!-- Seção DIURNO -->
+            <section id="section-diurno" class="my-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-amber-400 mb-2">☀️ PERÍODO DIURNO</h2>
+                    <p class="text-zinc-400 text-lg">9h às 11h</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div id="schedule-grid-diurno" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"></div>
+            </section>
+
+            <!-- Seção NOTURNO -->
+            <section id="section-noturno" class="my-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-purple-400 mb-2">🌙 PERÍODO NOTURNO</h2>
+                    <p class="text-zinc-400 text-lg">19h30 às 21h10</p>
+                    <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-indigo-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div id="schedule-grid-noturno" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"></div>
+            </section>
         </main>
 
         <!-- Rodapé -->
         <footer class="p-6 text-center border-t border-zinc-700">
             <p class="text-lg font-bold">Evento On-line</p>
-            <p class="text-zinc-400">13, 15, 16 e 17 de Outubro de 2025</p>
+            <p class="text-zinc-400">14, 15, 16 e 17 de Outubro de 2025</p>
         </footer>
 
-        <!-- Script: carregar JSON e renderizar cards -->
+        <!-- Modal para avisos -->
+        <div id="room-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+
+        <!-- Indicador de scroll -->
+        <div id="scroll-indicator" class="scroll-indicator">
+            👇 Veja também o período NOTURNO
+        </div>
+
+        <!-- Script principal -->
         <script>
+        let eventsData = [];
+
+        // Função para parsear horário
+        function parseTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        // Função para obter status da sala virtual
+        function getRoomStatus(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const currentDate = now.toISOString().split('T')[0];
+            
+            const startTime = parseTime(event.startTime);
+            const endTime = parseTime(event.endTime);
+            
+            // Se não é o dia do evento
+            if (currentDate !== event.date) {
+                return 'future';
+            }
+            
+            // Hora atual em minutos
+            const oneHourBefore = startTime - 60;
+            const oneHourAfter = endTime + 60;
+            
+            if (currentTime < oneHourBefore) {
+                return 'too_early';
+            } else if (currentTime >= oneHourBefore && currentTime < startTime) {
+                return 'waiting';
+            } else if (currentTime >= startTime && currentTime <= endTime) {
+                return 'active';
+            } else if (currentTime > endTime && currentTime <= oneHourAfter) {
+                return 'ended';
+            } else {
+                return 'closed';
+            }
+        }
+
+        // Função para mostrar modal
+        function showModal(content) {
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('room-modal').classList.add('show');
+        }
+
+        // Função para fechar modal
+        function closeModal() {
+            document.getElementById('room-modal').classList.remove('show');
+        }
+
+        // Função para acessar sala virtual
+        function accessVirtualRoom(eventIndex) {
+            const event = eventsData[eventIndex];
+            const status = getRoomStatus(event);
+            
+            switch (status) {
+                case 'too_early':
+                case 'future':
+                    showModal(`
+                        <h3>🕒 Sala ainda não está disponível</h3>
+                        <p>A reunião para "<strong>${event.title}</strong>" ainda não foi aberta.</p>
+                        <p>Por favor, tente acessar a partir de <strong>1 hora antes</strong> do horário de início (${event.time}).</p>
+                        <p><strong>Palestrante:</strong> ${event.speaker}</p>
+                    `);
+                    break;
+                    
+                case 'waiting':
+                    showModal(`
+                        <h3>⏰ Preparando para o evento</h3>
+                        <p>A sala virtual para "<strong>${event.title}</strong>" está sendo preparada.</p>
+                        <p>O evento começará em breve às <strong>${event.startTime}</strong>.</p>
+                        <div style="margin-top: 1.5rem;">
+                            <a href="${event.teamsUrl}" target="_blank" class="virtual-room-btn">
+                                🎥 Acessar Sala Virtual
+                            </a>
+                        </div>
+                    `);
+                    break;
+                    
+                case 'active':
+                    // Acesso direto à sala durante o evento
+                    window.open(event.teamsUrl, '_blank');
+                    break;
+                    
+                case 'ended':
+                    showModal(`
+                        <h3>📹 Evento encerrado</h3>
+                        <p>O evento "<strong>${event.title}</strong>" foi encerrado há pouco.</p>
+                        <p><strong>Palestrante:</strong> ${event.speaker}</p>
+                        ${event.recordingUrl ? `
+                            <div style="margin-top: 1.5rem;">
+                                <a href="${event.recordingUrl}" target="_blank" class="virtual-room-btn">
+                                    🎬 Assistir Gravação
+                                </a>
+                            </div>
+                        ` : `
+                            <div style="margin-top: 1.5rem;">
+                                <p style="color: #fbbf24; font-weight: bold;">Link da gravação será disponibilizado em breve</p>
+                                <input type="url" placeholder="Cole aqui o link da gravação..." class="recording-input" id="recording-url-${eventIndex}">
+                                <button onclick="saveRecording(${eventIndex})" class="save-recording-btn">Salvar Link da Gravação</button>
+                            </div>
+                        `}
+                    `);
+                    break;
+                    
+                case 'closed':
+                    showModal(`
+                        <h3>🔒 Acesso não disponível</h3>
+                        <p>O período de acesso para "<strong>${event.title}</strong>" foi encerrado.</p>
+                        <p><strong>Palestrante:</strong> ${event.speaker}</p>
+                        ${event.recordingUrl ? `
+                            <div style="margin-top: 1.5rem;">
+                                <a href="${event.recordingUrl}" target="_blank" class="virtual-room-btn">
+                                    🎬 Assistir Gravação
+                                </a>
+                            </div>
+                        ` : '<p style="color: #6b7280;">A gravação será disponibilizada em breve.</p>'}
+                    `);
+                    break;
+            }
+        }
+
+        // Função para salvar link da gravação
+        function saveRecording(eventIndex) {
+            const input = document.getElementById(`recording-url-${eventIndex}`);
+            const url = input.value.trim();
+            
+            if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                eventsData[eventIndex].recordingUrl = url;
+                // Aqui você poderia salvar no servidor
+                alert('Link da gravação salvo com sucesso!');
+                closeModal();
+                // Recarregar a interface para mostrar o novo link
+                loadSchedule();
+            } else {
+                alert('Por favor, insira um link válido (deve começar com http:// ou https://)');
+            }
+        }
+
+        // Função para obter texto do botão baseado no status
+        function getButtonText(status) {
+            switch (status) {
+                case 'too_early':
+                case 'future':
+                    return '🔒 Sala Virtual (Em breve)';
+                case 'waiting':
+                    return '⏰ Preparando Sala Virtual';
+                case 'active':
+                    return '🎥 Acessar Sala Virtual';
+                case 'ended':
+                    return '📹 Evento Encerrado';
+                case 'closed':
+                    return '🔒 Acesso Encerrado';
+                default:
+                    return '🎥 Acessar Sala Virtual';
+            }
+        }
+
+        // Função para navegação por período
+        function scrollToPeriod(period) {
+            const section = document.getElementById(`section-${period}`);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                
+                // Atualizar botões ativos
+                document.querySelectorAll('.period-toggle').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`btn-${period}`).classList.add('active');
+                
+                // Esconder indicador de scroll se for para noturno
+                if (period === 'noturno') {
+                    document.getElementById('scroll-indicator').classList.add('hidden');
+                }
+            }
+        }
+
+        // Função para criar card de evento
+        function createEventCard(ev, index) {
+            const status = getRoomStatus(ev);
+            const buttonText = getButtonText(status);
+            const isDisabled = status === 'too_early' || status === 'future';
+            const toTag = (t) => `<span class="bg-zinc-700 text-white text-xs font-bold px-3 py-1 rounded-full">${t}</span>`;
+            
+            return `
+                <div class="card rounded-lg p-6 event-card">
+                    <!-- Header fixo do card -->
+                    <div class="card-header">
+                        <div class="date-time-badge">${ev.dateLabel}</div>
+                        <div class="time-badge">${ev.period.toUpperCase()} | ${ev.time}</div>
+                    </div>
+
+                    <!-- Conteúdo principal do card -->
+                    <div class="card-content">
+                        <h3 class="event-title text-xl font-bold text-amber-300">${ev.speaker}</h3>
+                        <div class="event-company">
+                            ${ev.company ? `<p class="text-sm text-purple-300 font-semibold">${ev.company}</p>` : ''}
+                        </div>
+                        <div class="event-description text-zinc-200">${ev.title}</div>
+                    </div>
+
+                    <!-- Footer fixo do card -->
+                    <div class="card-footer">
+                        <button 
+                            onclick="accessVirtualRoom(${index})" 
+                            class="virtual-room-btn ${isDisabled ? 'opacity-60' : ''}"
+                            ${isDisabled ? 'disabled' : ''}
+                        >
+                            ${buttonText}
+                        </button>
+                        <div class="event-tags">${(ev.tags || []).map(toTag).join('')}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função principal para carregar eventos
         async function loadSchedule() {
             try {
                 const response = await fetch('./wica-data.json', { 
@@ -158,42 +643,83 @@
                     }
                 });
                 const data = await response.json();
-                const grid = document.getElementById('schedule-grid');
-                if (!grid) return;
-
-                const modalityBadge = (event) => {
-                    if (event.modality === 'remoto') {
-                        const url = event.teamsUrl || '#';
-                        return `<div class="modality"><a class="badge-remote" href="${url}" target="_blank" rel="noopener noreferrer">Remoto · Link da Sala</a></div>`;
-                    }
-                    if (event.modality === 'presencial') {
-                        const campus = event.campus || '';
-                        return `<div class="modality"><span class="badge-inperson">Presencial · ${campus}</span></div>`;
-                    }
-                    return '';
-                };
-
-                const toTag = (t) => `<span class="bg-zinc-700 text-white text-xs font-bold px-3 py-1 rounded-full">${t}</span>`;
-
-                grid.innerHTML = data.events.map(ev => `
-                    <div class="card rounded-lg p-6 event-card">
-                        <div class="date-time-badge">${ev.dateLabel}</div>
-                        <div class="time-badge">${ev.period.toUpperCase()} | ${ev.time}</div>
-                        <h3 class="event-title text-xl font-bold text-amber-300">${ev.speaker}</h3>
-                        <p class="event-description text-zinc-200">${ev.title}</p>
-                        ${modalityBadge(ev)}
-                        <div class="event-tags">${(ev.tags || []).map(toTag).join('')}</div>
-                    </div>
-                `).join('');
+                eventsData = data.events;
+                
+                // Separar eventos por período
+                const morningEvents = eventsData.filter(ev => ev.period === 'manhã');
+                const nightEvents = eventsData.filter(ev => ev.period === 'noite');
+                
+                // Renderizar eventos diurnos
+                const gridDiurno = document.getElementById('schedule-grid-diurno');
+                if (gridDiurno) {
+                    gridDiurno.innerHTML = morningEvents.map((ev, index) => {
+                        const originalIndex = eventsData.findIndex(e => e === ev);
+                        return createEventCard(ev, originalIndex);
+                    }).join('');
+                }
+                
+                // Renderizar eventos noturnos
+                const gridNoturno = document.getElementById('schedule-grid-noturno');
+                if (gridNoturno) {
+                    gridNoturno.innerHTML = nightEvents.map((ev, index) => {
+                        const originalIndex = eventsData.findIndex(e => e === ev);
+                        return createEventCard(ev, originalIndex);
+                    }).join('');
+                }
+                
+                // Mostrar indicador de scroll se houver eventos noturnos
+                if (nightEvents.length > 0) {
+                    updateScrollIndicator();
+                }
+                
             } catch (e) {
                 console.error('Erro ao carregar wica-data.json', e);
-                const grid = document.getElementById('schedule-grid');
-                if (grid) {
-                    grid.innerHTML = '<div class="col-span-full text-center text-red-400 p-8"><p>Erro ao carregar os eventos. Tente recarregar a página.</p></div>';
-                }
+                const gridDiurno = document.getElementById('schedule-grid-diurno');
+                const gridNoturno = document.getElementById('schedule-grid-noturno');
+                const errorMsg = '<div class="col-span-full text-center text-red-400 p-8"><p>Erro ao carregar os eventos. Tente recarregar a página.</p></div>';
+                
+                if (gridDiurno) gridDiurno.innerHTML = errorMsg;
+                if (gridNoturno) gridNoturno.innerHTML = errorMsg;
             }
         }
-        document.addEventListener('DOMContentLoaded', loadSchedule);
+
+        // Função para atualizar indicador de scroll
+        function updateScrollIndicator() {
+            const indicator = document.getElementById('scroll-indicator');
+            const noturnoSection = document.getElementById('section-noturno');
+            
+            if (!indicator || !noturnoSection) return;
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        indicator.classList.add('hidden');
+                    } else {
+                        // Verificar se estamos acima da seção noturno
+                        const rect = noturnoSection.getBoundingClientRect();
+                        if (rect.top > window.innerHeight) {
+                            indicator.classList.remove('hidden');
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(noturnoSection);
+        }
+
+        // Fechar modal ao clicar fora dele
+        document.getElementById('room-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Inicializar e atualizar a cada minuto
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSchedule();
+            // Atualizar status a cada minuto
+            setInterval(loadSchedule, 60000);
+        });
         </script>
 
     </div>
