@@ -38,7 +38,7 @@
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
-                text-fill-color: transparent;
+                color: transparent;
             }
             .card {
                 background-color: #27272a;
@@ -187,6 +187,18 @@
                 margin-top: 1rem;
                 min-height: 2rem;
                 align-items: flex-start;
+            }
+            
+            .event-block {
+                position: relative;
+            }
+            
+            .event-block:not(:first-child):before {
+                content: '';
+                display: block;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+                margin: 1rem 0;
             }
 
             /* Modal styles */
@@ -601,37 +613,98 @@
             const isDisabled = status === 'too_early' || status === 'future';
             const toTag = (t) => `<span class="bg-zinc-700 text-white text-xs font-bold px-3 py-1 rounded-full">${t}</span>`;
             
-            return `
-                <div class="card rounded-lg p-6 event-card">
-                    <!-- Header fixo do card -->
-                    <div class="card-header">
-                        <div class="date-time-badge">${ev.dateLabel}</div>
-                        <div class="time-badge">${ev.period.toUpperCase()} | ${ev.time}</div>
-                    </div>
-
-                    <!-- Conteúdo principal do card -->
-                    <div class="card-content">
-                        <h3 class="event-title text-xl font-bold text-amber-300">${ev.speaker}</h3>
-                        <div class="event-company">
-                            ${ev.company ? `<p class="text-sm text-purple-300 font-semibold">${ev.company}</p>` : ''}
+            // Se não faz parte de múltiplos eventos, cria card normal
+            if (!ev.multipleEvents) {
+                return `
+                    <div class="card rounded-lg p-6 event-card">
+                        <!-- Header fixo do card -->
+                        <div class="card-header">
+                            <div class="date-time-badge">${ev.dateLabel}</div>
+                            <div class="time-badge">${ev.period.toUpperCase()} | ${ev.time}</div>
                         </div>
-                        <div class="event-description text-zinc-200">${ev.title}</div>
-                    </div>
 
-                    <!-- Footer fixo do card -->
-                    <div class="card-footer">
-                        <button 
-                            onclick="accessVirtualRoom(${index})" 
-                            class="virtual-room-btn ${isDisabled ? 'opacity-60' : ''}"
-                            ${isDisabled ? 'disabled' : ''}
-                        >
-                            ${buttonText}
-                        </button>
-                        <div class="event-tags">${(ev.tags || []).map(toTag).join('')}</div>
+                        <!-- Conteúdo principal do card -->
+                        <div class="card-content">
+                            <h3 class="event-title text-xl font-bold text-amber-300">${ev.speaker}</h3>
+                            <div class="event-company">
+                                ${ev.company ? `<p class="text-sm text-purple-300 font-semibold">${ev.company}</p>` : ''}
+                            </div>
+                            <div class="event-description text-zinc-200">${ev.title}</div>
+                        </div>
+
+                        <!-- Footer fixo do card -->
+                        <div class="card-footer">
+                            <button 
+                                onclick="accessVirtualRoom(${index})" 
+                                class="virtual-room-btn ${isDisabled ? 'opacity-60' : ''}"
+                                ${isDisabled ? 'disabled' : ''}
+                            >
+                                ${buttonText}
+                            </button>
+                            <div class="event-tags">${(ev.tags || []).map(toTag).join('')}</div>
+                        </div>
                     </div>
-                </div>
-            `;
-        }
+                `;
+            } else {
+                // Procura outros eventos do mesmo dia e período
+                const sameEvents = eventsData.filter(e => 
+                    e.date === ev.date && 
+                    e.period === ev.period && 
+                    e.multipleEvents === true);
+                
+                // Mostra apenas o primeiro card para evitar duplicações
+                if (ev.eventId !== sameEvents[0].eventId) {
+                    return '';
+                }
+                
+                // Monta os blocos de conteúdo dos eventos
+                const eventBlocks = sameEvents.map((e, i) => {
+                    const eIndex = eventsData.findIndex(event => event === e);
+                    const eStatus = getRoomStatus(e);
+                    const eButtonText = getButtonText(eStatus);
+                    const eIsDisabled = eStatus === 'too_early' || eStatus === 'future';
+                    
+                    return `
+                        <div class="event-block ${i > 0 ? 'mt-4 pt-4 border-t border-zinc-600' : ''}">
+                            <h3 class="event-title text-xl font-bold text-amber-300">${e.speaker}</h3>
+                            <div class="event-company">
+                                ${e.company ? `<p class="text-sm text-purple-300 font-semibold">${e.company}</p>` : ''}
+                            </div>
+                            <div class="event-description text-zinc-200">${e.title}</div>
+                            <div class="mt-3">
+                                <button 
+                                    onclick="accessVirtualRoom(${eIndex})" 
+                                    class="virtual-room-btn ${eIsDisabled ? 'opacity-60' : ''}"
+                                    ${eIsDisabled ? 'disabled' : ''}
+                                >
+                                    ${eButtonText}
+                                </button>
+                                <div class="event-tags mt-2">${(e.tags || []).map(toTag).join('')}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Retorna o card com múltiplos eventos
+                return `
+                    <div class="card rounded-lg p-6 event-card">
+                        <!-- Header fixo do card -->
+                        <div class="card-header">
+                            <div class="date-time-badge">${ev.dateLabel}</div>
+                            <div class="time-badge">${ev.period.toUpperCase()} | ${ev.time}</div>
+                            <div class="bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-full inline-block mt-2">
+                                📢 MÚLTIPLAS PALESTRAS
+                            </div>
+                        </div>
+
+                        <!-- Conteúdo principal do card -->
+                        <div class="card-content flex-grow">
+                            ${eventBlocks}
+                        </div>
+                    </div>
+                `;
+            }
+            }
 
         // Função principal para carregar eventos
         async function loadSchedule() {

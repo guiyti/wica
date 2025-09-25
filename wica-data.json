@@ -53,7 +53,25 @@
       "title": "Inteligência Artificial: do fundamento aos Grafos de Conhecimento",
       "teamsUrl": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_rene_ia_grafos",
       "recordingUrl": "",
-      "tags": ["IA", "GRAFOS"]
+      "tags": ["IA", "GRAFOS"],
+      "multipleEvents": true,
+      "eventId": "15-10-noite-1"
+    },
+    {
+      "date": "2025-10-15",
+      "dateLabel": "15/10 - Quarta-feira",
+      "period": "noite",
+      "time": "19h30 às 21h10",
+      "startTime": "19:30",
+      "endTime": "21:10",
+      "speaker": "Taiolor Delgado",
+      "title": "Deep Dive nas Tecnologias de Integração: quando, onde e porque usar?",
+      "company": "Itaú",
+      "teamsUrl": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_taiolor_integracao",
+      "recordingUrl": "",
+      "tags": ["INTEGRAÇÃO", "ITAÚ"],
+      "multipleEvents": true,
+      "eventId": "15-10-noite-2"
     },
     {
       "date": "2025-10-16",
